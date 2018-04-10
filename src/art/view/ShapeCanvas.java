@@ -25,4 +25,39 @@ public class ShapeCanvas extends JPanel
 	{
 		
 	}
+	
+	public void addShape(Shape current)
+	{
+		
+	}
+	
+	public void clear()
+	{
+		
+	}
+	
+	public void changeBackground()
+	{
+		
+	}
+	
+	public void save()
+	{
+		
+	}
+	
+	private Color randomColor()
+	{
+		return null;
+	}
+	
+	private void updateImage()
+	{
+		
+	}
+	
+	protected void painComponent(Graphics graphics)
+	{
+		
+	}
 }

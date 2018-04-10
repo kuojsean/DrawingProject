@@ -118,6 +118,11 @@ public class ArtPanel extends JPanel
 		this.add(sliderPanel);
 	}
 	
+	private void setupLayout()
+	{
+		
+	}
+	
 	private boolean coinFlip()
 	{
 		return (int) (Math.random() * 2) == 0;
@@ -178,6 +183,8 @@ public class ArtPanel extends JPanel
 			double height = Math.random() * currentScale + 1;
 			ellipse.setFrame(cornerX, cornerY, width, height);;
 		}
+		
+		return ellipse;
 	}
 	
 	private void setupListeners()
