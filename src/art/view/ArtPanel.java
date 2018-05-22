@@ -227,5 +227,25 @@ public class ArtPanel extends JPanel
 				}
 			}
 		});
+		
+		canvas.addMouseMotionListener(new MouseMotionListener()
+				{
+			@Override
+			public void mouseDragged(MouseEvent drag)
+			{
+				int x = drag.getX();
+				int y = drag.getY();
+				System.out.println("X is at " + x + " Y is at " + y);
+				
+			}
+
+			@Override
+			public void mouseMoved(MouseEvent e)
+			{
+
+				
+			}
+			
+				});
 	}
 }

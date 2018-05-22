@@ -1,6 +1,8 @@
 package art.view;
 
 import java.awt.*;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseMotionListener;
 import java.awt.geom.*;
 import java.awt.image.*;
 import java.io.*;
@@ -11,13 +13,15 @@ import javax.swing.*;
 
 import art.controller.ArtController;
 
-public class ShapeCanvas extends JPanel
+public class ShapeCanvas extends JPanel implements MouseMotionListener
 {
 	private ArrayList<Polygon> triangleList;
 	private ArrayList<Polygon> polygonList;
 	private ArrayList<Ellipse2D> ellipseList;
 	private ArrayList<Rectangle> rectangleList;
 	private ArtController app;
+	private int previousX;
+	private int previousY;
 	
 	private BufferedImage canvasImage;
 	
@@ -25,6 +29,9 @@ public class ShapeCanvas extends JPanel
 	{
 		super();
 		this.app = app;
+		
+		previousX = Integer.MIN_VALUE;
+		previousY = Integer.MIN_VALUE;
 		triangleList = new ArrayList<Polygon>();
 		polygonList = new ArrayList<Polygon>();
 		ellipseList = new ArrayList<Ellipse2D>();
@@ -62,22 +69,65 @@ public class ShapeCanvas extends JPanel
 	
 	public void clear()
 	{
-		
+		canvasImage = new BufferedImage(600, 600, BufferedImage.TYPE_INT_ARGB);
+		ellipseList.clear();
+		triangleList.clear();
+		polygonList.clear();
+		rectangleList.clear();
+		updateImage();
 	}
 	
 	public void changeBackground()
 	{
-		
+		Graphics2D current = canvasImage.createGraphics();
+		current.setPaint(randomColor());
+		current.fillRect(0,  0,  canvasImage.getWidth(),  canvasImage.getHeight());
+		updateImage();
+	}
+	
+	public void drawOnCanvas(int xPosition, int yPosition)
+	{
+		Graphics2D current = canvasImage.createGraphics();
+		current.setPaint(randomColor());
+		current.setStroke(new BasicStroke(3));
+		if (previousX == Integer.MIN_VALUE)
+		{
+			current.drawLine(xPosition, yPosition, xPosition,  yPosition);
+
+		}
+		else
+		{
+			current.drawLine(previousX, previousY, xPosition,  yPosition);
+		}
+
+		previousX = xPosition;
+		previousY = yPosition;
+		updateImage();
 	}
 	
 	public void save()
 	{
-		
+		try
+		{
+			JFileChooser saveDialog = new JFileChooser();
+			saveDialog.showSaveDialog(app.getFrame());
+			String savePath = saveDialog.getSelectedFile().getPath();
+			ImageIO.write(canvasImage,  "PNG",  new File(savePath));
+		}
+		catch (IOException error)
+		{
+			app.handleErrors(error);
+		}
 	}
 	
 	private Color randomColor()
 	{
-		return null;
+		int red = (int)(Math.random() * 256);
+		int green = (int)(Math.random() * 256);
+		int blue = (int)(Math.random() * 256);
+		int alpha = (int)(Math.random() * 256);
+		
+		return new Color(red, green, blue, alpha);
 	}
 	
 	private void updateImage()
@@ -120,5 +170,19 @@ public class ShapeCanvas extends JPanel
 	{
 		super.paintComponent(graphics);
 		graphics.drawImage(canvasImage, 0,  0,  null);
+	}
+
+	@Override
+	public void mouseDragged(MouseEvent e)
+	{
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void mouseMoved(MouseEvent e)
+	{
+//		canvas.changeBackground();
+		
 	}
 }
